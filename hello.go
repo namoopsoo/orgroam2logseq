@@ -4,19 +4,34 @@ package main
 import (
     "fmt"
     "os"
-    "github.com/namoopsoo/orgroam2logseq/utils"
+    "github.com/namoopsoo/orgroam2logseq/okay"
+    "regexp"
 )
 
 func Migrate(sourceDir string, destinationDir string) error {
     fmt.Print(sourceDir, "->", destinationDir)
 
     var lines []string
-    lines, err = utils.ReadFileLines(sourceDir + "/example_org_roam/daily/2024-02-12.org")
+    lines, err := utils.ReadFileLines(sourceDir + "/daily/2024-02-12.org")
+
     if err != nil {
-        fmt.Println("error reading %v", err)
-        return
+        fmt.Printf("error reading %v", err)
+        return err
     }
-    fmt.Printf("lines \n\n%v\n\n", lines)
+
+    // ec22c32c-26b5-45a7-992-ff867494e7
+    idRegexp := "(:ID:) ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{3}-[a-f0-9]{10})$"
+    re := regexp.MustCompile(idRegexp)
+
+    for i, line := range lines {
+        matches := re.FindStringSubmatch(line)
+        if len(matches) > 0 {
+            fmt.Printf("%d, %v, match?\n", i, line)
+            for j, m := range matches {
+                fmt.Println(j, m)
+            }
+        }
+    }
 
     return nil
 }
