@@ -36,6 +36,45 @@ func ReadFileLines(filePath string) ([]string, error) {
     return lines, nil
 }
 
+func TransformLines(
+    lines []string, idMap map[string]string
+) []string {
+
+    // line := "Foo okay [[1259-aefe3-36def][Apple company]] okay and great [[473a-26faae-473d][intel.com]] ah nice"
+    //idMap := map[string]string{
+    //    "1259-aefe3-36def": "Apple.com",
+    //    "473a-26faae-473d": "Intel",
+    //}
+    // Regex to find patterns like [[id][company]]
+    re := regexp.MustCompile(`$begin:math:display$\\[([^$end:math:display$]+)\]$begin:math:display$([^$end:math:display$]+)\]\]`)
+    // Replacement function
+    replaceFn := func(m string) string {
+        matches := re.FindStringSubmatch(m)
+        if len(matches) == 3 {
+            // matches[0] is the whole match, matches[1] is the id, matches[2] is the company
+            if newName, ok := companyMap[matches[1]]; ok {
+                return fmt.Sprintf("[[%s]]", newName) // Use the new name from the map
+            }
+        }
+        return m // Return the original string if no replacement was made
+    }
+
+    var transformed []string
+    for _, line := range lines {
+
+        // Perform the replacement
+        result := re.ReplaceAllStringFunc(line, replaceFn)
+    
+        fmt.Println("Original:", input)
+        fmt.Println("Modified:", result)
+        transformed = append(transformed, result)
+    }
+    return transformed
+
+
+}
+
+
 //func main() {
 //    // Example usage
 //    filePath := "path/to/your/file.txt"
