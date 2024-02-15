@@ -8,22 +8,34 @@ import (
     "regexp"
 )
 
-func BuildIdTitleMap() {
+func BuildIdTitleMap(files []string) {
     var idMap map[string]string
     // for each file
     // FindIdTitle 
+    for _, file := range files {
+        // read, 
+        id, title := FindIdTitle(file)
+        idMap[id] = title
+    }
+    return idMap
 }
 
 // find id, title for org file
-func FindIdTitle(sourceDir string, destinationDir string) error {
-    fmt.Print(sourceDir, "->", destinationDir)
+func FindIdTitle(
+    //sourceDir string, destinationDir string
+    file
+) (string, string, error) {
+    // fmt.Print(sourceDir, "->", destinationDir)
 
     var lines []string
-    lines, err := utils.ReadFileLines(sourceDir + "/daily/2024-02-12.org")
+    lines, err := utils.ReadFileLines(
+    file
+    //sourceDir + "/daily/2024-02-12.org"
+    )
 
     if err != nil {
         fmt.Printf("error reading %v", err)
-        return err
+        return nil, nil, err
     }
 
     // ec22c32c-26b5-45a7-992-ff867494e7
@@ -59,8 +71,8 @@ func FindIdTitle(sourceDir string, destinationDir string) error {
         // if find both id and title, break early
         if foundID != "" and foundTitle != "" {break}
     }
-
-    return nil
+    return foundID, foundTitle, nil
+    // return nil
 }
 
 
@@ -82,6 +94,12 @@ func main() {
         PrintHelp()
         os.Exit(0)
     }
+
+    // build map 
+    // for each file 
+    // lines := utils.ReadFileLines
+
+
     switch os.Args[1] {
     case "migrate":
         sourceDir := os.Args[2]
