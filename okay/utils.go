@@ -59,7 +59,7 @@ func TransformLines(
                 return fmt.Sprintf("[%s](%s)", right, left)
             }
 
-            if newName, ok := idMap[matches[1]]; ok {
+            if newName, ok := idMap[left]; ok {
                 return fmt.Sprintf("[[%s]]", newName) // Use the new name from the map
             }
         }
