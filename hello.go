@@ -94,21 +94,24 @@ func main() {
         PrintHelp()
         os.Exit(0)
     }
-
+    sourceDir := os.Args[2]
+    destinationDir := os.Args[3]
     // build map 
     // for each file 
     // lines := utils.ReadFileLines
 
     // list all nonjournal files 
-    files := ... 
+    files := utils.ListDir(sourceDir)
 
     idMap := BuildIdTitleMap(files)
 
+    // and journal files too
+
+    // and transform !
 
     switch os.Args[1] {
     case "migrate":
-        sourceDir := os.Args[2]
-        destinationDir := os.Args[3]
+
         err := Migrate(sourceDir, destinationDir)
         if err != nil {
             fmt.Fprintf(os.Stderr, "Oops: %v\n", err)
