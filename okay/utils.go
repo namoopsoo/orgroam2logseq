@@ -45,14 +45,21 @@ func TransformLines(
     //    "1259-aefe3-36def": "Apple.com",
     //    "473a-26faae-473d": "Intel",
     //}
-    // Regex to find patterns like [[id][company]]
+    // Regex to find patterns like [[id][title]]
     re := regexp.MustCompile(`$begin:math:display$\\[([^$end:math:display$]+)\]$begin:math:display$([^$end:math:display$]+)\]\]`)
     // Replacement function
     replaceFn := func(m string) string {
         matches := re.FindStringSubmatch(m)
         if len(matches) == 3 {
-            // matches[0] is the whole match, matches[1] is the id, matches[2] is the company
-            if newName, ok := companyMap[matches[1]]; ok {
+            // matches[0] is the whole match, matches[1] is the id, matches[2] is the title
+            // is it a url? 
+            left := matches[1]
+            right := matches[2]
+            if strings.HasPrefix(right, "https://") {
+                return fmt.Sprintf("[%s](%s)", right, left)
+            }
+
+            if newName, ok := idMap[matches[1]]; ok {
                 return fmt.Sprintf("[[%s]]", newName) // Use the new name from the map
             }
         }
