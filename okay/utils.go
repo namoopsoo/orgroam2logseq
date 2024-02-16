@@ -75,6 +75,39 @@ func TransformLines(
 }
 
 
+func ListDir(folderPath string) (error, []string) {
+
+    var paths := []string
+
+    //folderPath := "./path/to/your/folder"
+
+    // Read the directory contents
+    files, err := os.ReadDir(folderPath)
+    if err != nil {
+        fmt.Println("Error reading directory:", err)
+        return err, nil
+    }
+
+    for _, file := range files {
+        // Check if the directory entry is a file and not a directory
+        info, err := file.Info()
+        if err != nil {
+            fmt.Println("Error getting file info:", err)
+            continue
+        }
+
+        if !info.IsDir() {
+            paths = append(
+                paths, 
+                file.Name()
+            )
+        // fmt.Println(file.Name()) // Print the file name
+        }
+
+    }
+    return nil, paths
+}
+
 //func main() {
 //    // Example usage
 //    filePath := "path/to/your/file.txt"
