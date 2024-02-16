@@ -6,6 +6,7 @@ import (
     "os"
     "github.com/namoopsoo/orgroam2logseq/okay"
     "regexp"
+    "net/url"
 )
 
 func BuildIdTitleMap(files []string) {
@@ -75,7 +76,33 @@ func FindIdTitle(
     // return nil
 }
 
+func NewFileName(name string) string {
+    // TODO error handling
 
+    // lower
+    s1 = strings.ToLower(name)
+
+    // special characters -> percent encoded
+    // https://www.urlencoder.io/golang/
+    return url.QueryEscape(s1)
+}
+
+func Migrate(sourceDir string) error {
+    // copy/transform pages 
+    files := ...
+
+    for _, name := range files {
+        // new filename is %-encoded special characters and probably lower cased 
+        newFileName := NewFileName(fileName)
+
+        // transform 
+        utils.Transform()
+    }
+
+    // journals next 
+
+    // assets next
+}
 
 func PrintHelp() {
     fmt.Print(`
