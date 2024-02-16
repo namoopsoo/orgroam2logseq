@@ -99,6 +99,11 @@ func main() {
     // for each file 
     // lines := utils.ReadFileLines
 
+    // list all nonjournal files 
+    files := ... 
+
+    idMap := BuildIdTitleMap(files)
+
 
     switch os.Args[1] {
     case "migrate":
