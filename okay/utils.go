@@ -40,15 +40,19 @@ func ReadFileLines(filePath string) ([]string, error) {
 func WriteLines(path string, lines []string) error {
 
     // open a file 
-    file, error := os.Open(path)
+    file, error := os.Create(path)
     if error != nil {
         return fmt.Errorf("error opening %v", error)
     }
+    defer file.Close()
 
-    writer := io.BuffWriter(file)
+    writer := bufio.NewWriter(file)
 
     for _, line := range lines {
-        fmt.Fprintf(writer, line + "\n")
+        // fmt.Fprintf(writer, line + "\n")
+        if _, err = writer.WriteString(line + "\n") {
+            return fmt.Printf("error")
+        }
     }
 
     // flush
