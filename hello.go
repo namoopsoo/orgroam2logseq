@@ -87,16 +87,27 @@ func NewFileName(name string) string {
     return url.QueryEscape(s1)
 }
 
-func Migrate(sourceDir string) error {
+func Migrate(sourceDir string, destinationDir string) error {
     // copy/transform pages 
-    files := ...
 
-    for _, name := range files {
+    // list all nonjournal files 
+    files := utils.ListDir(sourceDir)
+
+    idMap := BuildIdTitleMap(files)
+
+    // and journal files too
+
+    // and transform !
+    for _, fileName := range files {
         // new filename is %-encoded special characters and probably lower cased 
         newFileName := NewFileName(fileName)
 
+        sourcePath := sourceDir + "/" + fileName
         // transform 
-        utils.Transform()
+        transformed := utils.Transform(sourcePath)
+
+        // write to new location 
+        // pages dir
     }
 
     // journals next 
