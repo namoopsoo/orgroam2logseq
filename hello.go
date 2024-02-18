@@ -104,7 +104,7 @@ func Migrate(sourceDir string, destinationDir string) error {
 
         sourcePath := sourceDir + "/" + fileName
         // transform 
-        transformed := utils.Transform(sourcePath)
+        transformed := utils.TransformLines(sourcePath, idMap)
 
         // write to new location 
         // pages dir
