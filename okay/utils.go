@@ -36,6 +36,27 @@ func ReadFileLines(filePath string) ([]string, error) {
     return lines, nil
 }
 
+
+func WriteLines(path string, lines []string) error {
+
+    // open a file 
+    file, error := os.Open(path)
+    if error != nil {
+        return fmt.Errorf("error opening %v", error)
+    }
+
+    writer := io.BuffWriter(file)
+
+    for _, line := range lines {
+        fmt.Fprintf(writer, line + "\n")
+    }
+
+    // flush
+    writer.flush()
+
+    return nil
+}
+
 func TransformLines(
     lines []string, idMap map[string]string
 ) []string {
