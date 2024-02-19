@@ -34,7 +34,7 @@ func FindIdTitle(filePath string) (string, string, error) {
 
     if err != nil {
         fmt.Printf("error reading %v", err)
-        return nil, nil, err
+        return "", "", err
     }
 
     // ec22c32c-26b5-45a7-992-ff867494e7
