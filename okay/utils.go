@@ -130,6 +130,11 @@ func ListDir(folderPath string) (error, []string) {
         }
 
         if !info.IsDir() {
+
+            // only org files
+            if ! strings.HasSuffix(file.Name(), ".org") {
+                continue
+            }
             paths = append(paths, file.Name())
         // fmt.Println(file.Name()) // Print the file name
         }

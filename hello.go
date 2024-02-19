@@ -7,6 +7,7 @@ import (
     "github.com/namoopsoo/orgroam2logseq/okay"
     "regexp"
     "net/url"
+    "strings"
 )
 
 func BuildIdTitleMap(files []string) (map[string]string, error) {
@@ -16,6 +17,9 @@ func BuildIdTitleMap(files []string) (map[string]string, error) {
     for _, file := range files {
         // read, 
         id, title, err := FindIdTitle(file)
+
+        fmt.Printf("file %v , id %v, title %v\n\n", file, id, title)
+
         if err != nil {
             return nil, fmt.Errorf("err %v", err)
         }
@@ -58,7 +62,7 @@ func FindIdTitle(filePath string) (string, string, error) {
         }
 
         // also match title        
-        matches := titleRe.FindStringSubmatch(line)
+        matches = titleRe.FindStringSubmatch(line)
         if len(matches) > 0 {
             fmt.Printf("%d, %v, match?\n", i, line)
             for j, m := range matches {
@@ -78,7 +82,7 @@ func NewFileName(name string) string {
     // TODO error handling
 
     // lower
-    s1 = strings.ToLower(name)
+    s1 := strings.ToLower(name)
 
     // special characters -> percent encoded
     // https://www.urlencoder.io/golang/
@@ -89,11 +93,15 @@ func Migrate(sourceDir string, destinationDir string) error {
     // copy/transform pages 
 
     // list all nonjournal files 
-    files := utils.ListDir(sourceDir)
-    for _, x := range files {
-        fmt.Printf("file %v", x)
+    err, files := utils.ListDir(sourceDir)
+    if err != nil {
+        return fmt.Errorf("listdir err %v", err)
     }
-    return nil
+
+    for _, x := range files {
+        fmt.Printf("file %v\n", x)
+    }
+    // return nil
 
     idMap, err := BuildIdTitleMap(files)
     if err != nil {
@@ -108,16 +116,27 @@ func Migrate(sourceDir string, destinationDir string) error {
         newFileName := NewFileName(fileName)
 
         sourcePath := sourceDir + "/" + fileName
-        // transform 
-        transformed := utils.TransformLines(sourcePath, idMap)
+
+        lines, err := utils.ReadFileLines(sourcePath)
+        if err != nil {
+            return fmt.Errorf("mmkay %v", err)
+        }
+
+        transformed := utils.TransformLines(lines, idMap)
 
         // write to new location 
         // pages dir
+        newPath := destinationDir + "/" + newFileName
+        err = utils.WriteLines(newPath, transformed)
+        if err != nil {
+            return fmt.Errorf("oops %v", err)
+        }
     }
 
     // journals next 
 
     // assets next
+    return nil
 }
 
 func PrintHelp() {
