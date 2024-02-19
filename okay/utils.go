@@ -38,7 +38,6 @@ func ReadFileLines(filePath string) ([]string, error) {
 
 
 func WriteLines(path string, lines []string) error {
-
     // open a file 
     file, error := os.Create(path)
     if error != nil {
@@ -50,19 +49,21 @@ func WriteLines(path string, lines []string) error {
 
     for _, line := range lines {
         // fmt.Fprintf(writer, line + "\n")
-        if _, err = writer.WriteString(line + "\n") {
-            return fmt.Printf("error")
+        if _, err := writer.WriteString(line + "\n"); err != nil {
+            return fmt.Errorf("error")
         }
     }
 
     // flush
-    writer.flush()
+    if err := writer.Flush(); err != nil {
+        return fmt.Errorf("error flush %v", err)
+    }
 
     return nil
 }
 
 func TransformLines(
-    lines []string, idMap map[string]string
+    lines []string, idMap map[string]string,
 ) []string {
 
     // line := "Foo okay [[1259-aefe3-36def][Apple company]] okay and great [[473a-26faae-473d][intel.com]] ah nice"
@@ -102,7 +103,6 @@ func TransformLines(
         transformed = append(transformed, result)
     }
     return transformed
-
 
 }
 
