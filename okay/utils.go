@@ -4,7 +4,8 @@ import (
     "bufio"
     "fmt"
     "os"
-    // "strings"
+    "strings"
+    "regexp"
 )
 
 // ReadFileLines reads a file and returns its lines as a slice of strings.
@@ -98,7 +99,7 @@ func TransformLines(
         // Perform the replacement
         result := re.ReplaceAllStringFunc(line, replaceFn)
     
-        fmt.Println("Original:", input)
+        fmt.Println("Original:", line)
         fmt.Println("Modified:", result)
         transformed = append(transformed, result)
     }
@@ -109,7 +110,7 @@ func TransformLines(
 
 func ListDir(folderPath string) (error, []string) {
 
-    var paths := []string
+    var paths []string
 
     //folderPath := "./path/to/your/folder"
 
@@ -129,10 +130,7 @@ func ListDir(folderPath string) (error, []string) {
         }
 
         if !info.IsDir() {
-            paths = append(
-                paths, 
-                file.Name()
-            )
+            paths = append(paths, file.Name())
         // fmt.Println(file.Name()) // Print the file name
         }
 

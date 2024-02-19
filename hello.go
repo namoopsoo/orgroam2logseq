@@ -9,30 +9,28 @@ import (
     "net/url"
 )
 
-func BuildIdTitleMap(files []string) {
+func BuildIdTitleMap(files []string) (map[string]string, error) {
     var idMap map[string]string
     // for each file
     // FindIdTitle 
     for _, file := range files {
         // read, 
-        id, title := FindIdTitle(file)
+        id, title, err := FindIdTitle(file)
+        if err != nil {
+            return nil, fmt.Errorf("err %v", err)
+        }
         idMap[id] = title
     }
-    return idMap
+    return idMap, nil
 }
 
 // find id, title for org file
-func FindIdTitle(
-    //sourceDir string, destinationDir string
-    file
-) (string, string, error) {
+func FindIdTitle(filePath string) (string, string, error) {
     // fmt.Print(sourceDir, "->", destinationDir)
 
     var lines []string
-    lines, err := utils.ReadFileLines(
-    file
+    lines, err := utils.ReadFileLines(filePath)
     //sourceDir + "/daily/2024-02-12.org"
-    )
 
     if err != nil {
         fmt.Printf("error reading %v", err)
@@ -70,7 +68,7 @@ func FindIdTitle(
         }
 
         // if find both id and title, break early
-        if foundID != "" and foundTitle != "" {break}
+        if foundID != "" && foundTitle != "" {break}
     }
     return foundID, foundTitle, nil
     // return nil
@@ -92,8 +90,15 @@ func Migrate(sourceDir string, destinationDir string) error {
 
     // list all nonjournal files 
     files := utils.ListDir(sourceDir)
+    for _, x := range files {
+        fmt.Printf("file %v", x)
+    }
+    return nil
 
-    idMap := BuildIdTitleMap(files)
+    idMap, err := BuildIdTitleMap(files)
+    if err != nil {
+        return fmt.Errorf("err %v", err)
+    }
 
     // and journal files too
 
@@ -134,18 +139,6 @@ func main() {
     }
     sourceDir := os.Args[2]
     destinationDir := os.Args[3]
-    // build map 
-    // for each file 
-    // lines := utils.ReadFileLines
-
-    // list all nonjournal files 
-    files := utils.ListDir(sourceDir)
-
-    idMap := BuildIdTitleMap(files)
-
-    // and journal files too
-
-    // and transform !
 
     switch os.Args[1] {
     case "migrate":
