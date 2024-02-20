@@ -11,7 +11,7 @@ import (
 )
 
 func BuildIdTitleMap(files []string) (map[string]string, error) {
-    var idMap map[string]string
+    idMap := make(map[string]string)
     // for each file
     // FindIdTitle 
     for _, file := range files {
