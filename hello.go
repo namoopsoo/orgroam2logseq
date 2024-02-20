@@ -17,12 +17,12 @@ func BuildIdTitleMap(files []string) (map[string]string, error) {
     for _, file := range files {
         // read, 
         id, title, err := FindIdTitle(file)
-
-        fmt.Printf("file %v , id %v, title %v\n\n", file, id, title)
-
         if err != nil {
-            return nil, fmt.Errorf("err %v", err)
+            return nil, fmt.Errorf("FindIdTitle: err %v", err)
         }
+
+        fmt.Printf("file %v , id \"%v\", title \"%v\"\n\n", file, id, title)
+
         idMap[id] = title
     }
     return idMap, nil
@@ -42,23 +42,24 @@ func FindIdTitle(filePath string) (string, string, error) {
     }
 
     // ec22c32c-26b5-45a7-992-ff867494e7
-    idRegexp := "(:ID:) ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{3}-[a-f0-9]{10})$"
+    idRegexp := "(:ID:) ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$"
     idRe := regexp.MustCompile(idRegexp)
 
-    titleRegexp := "#+:title (.*)$"
+    titleRegexp := "#+title: (.*)$"
     titleRe := regexp.MustCompile(titleRegexp)
     
     foundID := ""
     foundTitle := ""
 
     for i, line := range lines {
+        //fmt.Printf("DEBUG: %v\n", line)
         matches := idRe.FindStringSubmatch(line)
         if len(matches) > 0 {
             fmt.Printf("%d, %v, match?\n", i, line)
             for j, m := range matches {
                 fmt.Println(j, m)
             }
-            foundID = matches[1]
+            foundID = matches[2]
         }
 
         // also match title        
@@ -68,7 +69,7 @@ func FindIdTitle(filePath string) (string, string, error) {
             for j, m := range matches {
                 fmt.Println(j, m)
             }
-            foundTitle = matches[1]
+            foundTitle = matches[2]
         }
 
         // if find both id and title, break early
@@ -98,17 +99,20 @@ func Migrate(sourceDir string, destinationDir string) error {
         return fmt.Errorf("listdir err %v", err)
     }
 
-    for _, x := range files {
-        fmt.Printf("file %v\n", x)
+    var filePaths []string
+    for _, fileName := range files {
+        path := sourceDir + "/" + fileName
+        fmt.Printf("path %v\n", path)
+        filePaths = append(filePaths, path)
     }
     // return nil
 
-    idMap, err := BuildIdTitleMap(files)
+    idMap, err := BuildIdTitleMap(filePaths)
     if err != nil {
         return fmt.Errorf("err %v", err)
     }
 
-    // and journal files too
+    // TODO and journal files too
 
     // and transform !
     for _, fileName := range files {
