@@ -42,10 +42,10 @@ func FindIdTitle(filePath string) (string, string, error) {
     }
 
     // ec22c32c-26b5-45a7-992-ff867494e7
-    idRegexp := "(:ID:) ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$"
+    idRegexp := ":ID: ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$"
     idRe := regexp.MustCompile(idRegexp)
 
-    titleRegexp := "#+title: (.*)$"
+	titleRegexp := "[#][+]title: (.*)$"
     titleRe := regexp.MustCompile(titleRegexp)
     
     foundID := ""
@@ -59,7 +59,7 @@ func FindIdTitle(filePath string) (string, string, error) {
             for j, m := range matches {
                 fmt.Println(j, m)
             }
-            foundID = matches[2]
+            foundID = matches[1]
         }
 
         // also match title        
@@ -69,7 +69,7 @@ func FindIdTitle(filePath string) (string, string, error) {
             for j, m := range matches {
                 fmt.Println(j, m)
             }
-            foundTitle = matches[2]
+            foundTitle = matches[1]
         }
 
         // if find both id and title, break early
