@@ -73,7 +73,8 @@ func TransformLines(
     //    "473a-26faae-473d": "Intel",
     //}
     // Regex to find patterns like [[id][title]]
-    re := regexp.MustCompile(`$begin:math:display$\\[([^$end:math:display$]+)\]$begin:math:display$([^$end:math:display$]+)\]\]`)
+    re := regexp.MustCompile(`\[\[([^\]]+)\]\[([^\]]+)\]\]`)
+    
     // Replacement function
     replaceFn := func(m string) string {
         matches := re.FindStringSubmatch(m)
