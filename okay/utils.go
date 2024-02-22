@@ -18,7 +18,7 @@ func ReadFileLines(filePath string) ([]string, error) {
     // Open the file
     file, err := os.Open(filePath)
     if err != nil {
-        return nil, fmt.Errorf("error opening file: %v", err)
+        return nil, fmt.Errorf("error opening file for reading: %v", err)
     }
     defer file.Close()
 
@@ -42,7 +42,7 @@ func WriteLines(path string, lines []string) error {
     // open a file 
     file, error := os.Create(path)
     if error != nil {
-        return fmt.Errorf("error opening %v", error)
+        return fmt.Errorf("error opening for writing %v", error)
     }
     defer file.Close()
 
