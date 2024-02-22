@@ -108,6 +108,21 @@ func Migrate(sourceDir string, destinationDir string) error {
     }
     // return nil
 
+
+    // TODO and journal files too
+    var journalPaths []string
+    err, journalFiles := utils.ListDir(sourceDir + "/daily")
+    if err != nil {
+        return fmt.Errorf("listdir err %v", err)
+    }
+    fmt.Printf("journal files %v\n\n", journalFiles)
+    for _, x := range journalFiles {
+        journalPaths = append(journalPaths, sourceDir + "/daily/" + x)
+    }
+
+    filePaths = append(filePaths, journalPaths...)
+
+
     idMap, err := BuildIdTitleMap(filePaths)
     if err != nil {
         return fmt.Errorf("err %v", err)
@@ -115,12 +130,6 @@ func Migrate(sourceDir string, destinationDir string) error {
     
     fmt.Printf("id map, %v\n\n", idMap)
 
-    // TODO and journal files too
-    err, journalFiles := utils.ListDir(sourceDir + "/daily")
-    if err != nil {
-        return fmt.Errorf("listdir err %v", err)
-    }
-    fmt.Printf("journal files %v\n\n", journalFiles)
 
     // and transform !
     for _, fileName := range journalFiles {
