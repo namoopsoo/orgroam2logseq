@@ -19,7 +19,7 @@
 
 *** org mode does not support logseq style embeddings, if a org page has a slash the file looks like this for instance, [[id:b1477d7a-0726
 -4a58-8eb4-0b00677257b7] [gpt/4]],
-*** A link to a different journal daily page looks like this , [id: ec22c32c-2665-45a7-992-ff867e4e94e7] [2024-02-1211,
+*** A link to a different journal daily page looks like this , [[id:ec22c32c-2665-45a7-992-ff867e4e94e7][2024-02-12]],
 *** images, Look like this
 #+ATTR_ORG: :width 666
 #ATTR_HTML: :width 900

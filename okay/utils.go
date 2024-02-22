@@ -93,6 +93,8 @@ func TransformLines(
                     theId := matches[1]
                     if newName, ok := idMap[theId]; ok {
                         return fmt.Sprintf("[[%s]]", newName) // Use the new name from the map
+                    } else {
+                        fmt.Printf("uh oh this id was not found! %v , %v\n", theId, right)
                     }
                 }
             }
