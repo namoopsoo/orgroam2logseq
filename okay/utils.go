@@ -107,8 +107,11 @@ func TransformLines(
         // Perform the replacement
         result := re.ReplaceAllStringFunc(line, replaceFn)
     
-        fmt.Println("Original:", line)
-        fmt.Println("Modified:", result)
+        if line != result {
+            fmt.Println("\nDEBUG")
+            fmt.Println("Original:", line)
+            fmt.Println("Modified:", result)
+        }
         transformed = append(transformed, result)
     }
     return transformed
