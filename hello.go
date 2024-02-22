@@ -98,6 +98,7 @@ func Migrate(sourceDir string, destinationDir string) error {
     if err != nil {
         return fmt.Errorf("listdir err %v", err)
     }
+    
 
     var filePaths []string
     for _, fileName := range files {
@@ -111,15 +112,22 @@ func Migrate(sourceDir string, destinationDir string) error {
     if err != nil {
         return fmt.Errorf("err %v", err)
     }
+    
+    fmt.Printf("id map, %v\n\n", idMap)
 
     // TODO and journal files too
+    err, journalFiles := utils.ListDir(sourceDir + "/daily")
+    if err != nil {
+        return fmt.Errorf("listdir err %v", err)
+    }
+    fmt.Printf("journal files %v\n\n", journalFiles)
 
     // and transform !
-    for _, fileName := range files {
+    for _, fileName := range journalFiles {
         // new filename is %-encoded special characters and probably lower cased 
         newFileName := NewFileName(fileName)
 
-        sourcePath := sourceDir + "/" + fileName
+        sourcePath := sourceDir + "/daily/" + fileName
 
         lines, err := utils.ReadFileLines(sourcePath)
         if err != nil {

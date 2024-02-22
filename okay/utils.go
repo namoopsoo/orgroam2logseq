@@ -74,6 +74,7 @@ func TransformLines(
     //}
     // Regex to find patterns like [[id][title]]
     re := regexp.MustCompile(`\[\[([^\]]+)\]\[([^\]]+)\]\]`)
+    idRe := regexp.MustCompile(`id:(.*)$`)
     
     // Replacement function
     replaceFn := func(m string) string {
@@ -86,10 +87,16 @@ func TransformLines(
             if strings.HasPrefix(right, "https://") {
                 return fmt.Sprintf("[%s](%s)", right, left)
             }
-
-            if newName, ok := idMap[left]; ok {
-                return fmt.Sprintf("[[%s]]", newName) // Use the new name from the map
+            if strings.HasPrefix(left, "id:"){
+                matches := idRe.FindStringSubmatch(left)
+                if len(matches) > 0 {
+                    theId := matches[1]
+                    if newName, ok := idMap[theId]; ok {
+                        return fmt.Sprintf("[[%s]]", newName) // Use the new name from the map
+                    }
+                }
             }
+
         }
         return m // Return the original string if no replacement was made
     }
