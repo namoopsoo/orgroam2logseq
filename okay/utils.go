@@ -88,7 +88,9 @@ func TransformLines(
             // split on /
             fileName := strings.Split(foo, "/")[-1]
             // TODO logseq asset? 
+            return fmt.Sprintf("![img](../assets/%s)", fileName)
         }
+        return m
     }
 
     replaceFn := func(m string) string {
