@@ -106,6 +106,10 @@ func TransformLines(
     var transformed []string
     for _, line := range lines {
 
+        if ( strings.HasPrefix(line, ":PROPERTIES:") || strings.HasPrefix(line, ":ID:") || strings.HasPrefix(line, ":END:") || strings.HasPrefix(line, "#+title:")) {
+            continue
+        }
+
         // Perform the replacement
         result := re.ReplaceAllStringFunc(line, replaceFn)
     
