@@ -141,9 +141,10 @@ func Migrate(sourceDir string, destinationDir string) error {
         sourcePath := sourceDir + "/daily/" + fileName
 
         // hmm although for journal files, date name
-        id, title, err := FindIdTitle(sourcePath)
+        // id, title, err := FindIdTitle(sourcePath)
         // find Id, title again?
-        newFileName := NewFileName(title)
+        newFileName := strings.Replace(fileName, "-", "_")// NewFileName(title)
+        
 
         lines, err := utils.ReadFileLines(sourcePath)
         if err != nil {
