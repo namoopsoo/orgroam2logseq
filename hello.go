@@ -99,13 +99,13 @@ func Migrate(sourceDir string, destinationDir string) error {
     // copy/transform pages 
 
     // list all nonjournal files 
-    err, files := utils.ListDir(sourceDir)
+    err, pageFiles := utils.ListDir(sourceDir)
     if err != nil {
         return fmt.Errorf("listdir err %v", err)
     }
 
     var filePaths []string
-    for _, fileName := range files {
+    for _, fileName := range pageFiles {
         path := sourceDir + "/" + fileName
         fmt.Printf("path %v\n", path)
         filePaths = append(filePaths, path)
@@ -151,7 +151,7 @@ func Migrate(sourceDir string, destinationDir string) error {
     }
 
     // and transform pages too TODO dont copypasta
-    for _, fileName := range filePaths {
+    for _, fileName := range pageFiles {
         newFileName := NewFileName(fileName)
 
         sourcePath := sourceDir + "/" + fileName
