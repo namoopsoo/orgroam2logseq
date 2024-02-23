@@ -3,7 +3,7 @@
 :END:
 #+title: 2024-02-11
 
-* I [[id:f165085-7cd0-46d6-b081-b5bfdb548ce][my org roam log seq integration]]
+* I [[id:f1650852-7cd0-46d6-b081-b5bfdb548cef][my org roam log seq integration]]
 ** 12:51 lets make a example org roam setup one can use to test out migrating
 *** putting it into ~/Users/mpiekarczyk/Notes/2024-02-11-example-org-roam~
 *** pages are on the root, for example, we have a blank page, ~20240130103457-apnea. org~ , 15 **** it starts with ~YYYYmmddHHMMSS-~ prefix .
@@ -19,7 +19,7 @@
 
 *** org mode does not support logseq style embeddings, if a org page has a slash the file looks like this for instance, [[id:b1477d7a-0726
 -4a58-8eb4-0b00677257b7] [gpt/4]],
-*** A link to a different journal daily page looks like this , [[id:ec22c32c-2665-45a7-992-ff867e4e94e7][2024-02-12]],
+*** A link to a different journal daily page looks like this , [[id:ec22c32c-2665-45a7-992f-ff867e4e94e7][2024-02-12]],
 *** images, Look like this
 #+ATTR_ORG: :width 666
 #ATTR_HTML: :width 900

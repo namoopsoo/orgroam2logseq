@@ -73,9 +73,12 @@ func FindIdTitle(filePath string) (string, string, error) {
         }
 
         // if find both id and title, break early
-        if foundID != "" && foundTitle != "" {break}
+        if foundID != "" && foundTitle != "" {
+            return foundID, foundTitle, nil
+        }
     }
-    return foundID, foundTitle, nil
+
+    return foundID, foundTitle, fmt.Errorf("Uh oh regex did not find id or title in %v", filePath)
     // return nil
 }
 
