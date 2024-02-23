@@ -85,6 +85,8 @@ func FindIdTitle(filePath string) (string, string, error) {
 func NewFileName(name string) string {
     // TODO error handling
 
+    // TODO and spaces look like they dont need to be %20.
+
     // lower
     s1 := strings.ToLower(name)
 
@@ -101,7 +103,6 @@ func Migrate(sourceDir string, destinationDir string) error {
     if err != nil {
         return fmt.Errorf("listdir err %v", err)
     }
-    
 
     var filePaths []string
     for _, fileName := range files {
@@ -109,10 +110,7 @@ func Migrate(sourceDir string, destinationDir string) error {
         fmt.Printf("path %v\n", path)
         filePaths = append(filePaths, path)
     }
-    // return nil
 
-
-    // TODO and journal files too
     var journalPaths []string
     err, journalFiles := utils.ListDir(sourceDir + "/daily")
     if err != nil {
@@ -125,7 +123,6 @@ func Migrate(sourceDir string, destinationDir string) error {
 
     filePaths = append(filePaths, journalPaths...)
 
-
     idMap, err := BuildIdTitleMap(filePaths)
     if err != nil {
         return fmt.Errorf("err %v", err)
@@ -133,10 +130,8 @@ func Migrate(sourceDir string, destinationDir string) error {
     
     fmt.Printf("id map, %v\n\n", idMap)
 
-
     // and transform !
     for _, fileName := range journalFiles {
-        // new filename is %-encoded special characters and probably lower cased 
         newFileName := NewFileName(fileName)
 
         sourcePath := sourceDir + "/daily/" + fileName
@@ -145,19 +140,34 @@ func Migrate(sourceDir string, destinationDir string) error {
         if err != nil {
             return fmt.Errorf("mmkay %v", err)
         }
-
         transformed := utils.TransformLines(lines, idMap)
 
         // write to new location 
-        // pages dir
-        newPath := destinationDir + "/" + newFileName
+        newPath := destinationDir + "/journals/" + newFileName
         err = utils.WriteLines(newPath, transformed)
         if err != nil {
             return fmt.Errorf("oops %v", err)
         }
     }
 
-    // journals next 
+    // and transform pages too TODO dont copypasta
+    for _, fileName := range filePaths {
+        newFileName := NewFileName(fileName)
+
+        sourcePath := sourceDir + "/" + fileName
+        lines, err := utils.ReadFileLines(sourcePath)
+        if err != nil {
+            return fmt.Errorf("mmkay %v", err)
+        }
+        transformed := utils.TransformLines(lines, idMap)
+
+        // write to new location 
+        newPath := destinationDir + "/pages/" + newFileName
+        err = utils.WriteLines(newPath, transformed)
+        if err != nil {
+            return fmt.Errorf("oops %v", err)
+        }
+    } 
 
     // assets next
     return nil
