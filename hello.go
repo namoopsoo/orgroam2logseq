@@ -87,12 +87,17 @@ func NewFileName(name string) string {
 
     // TODO and spaces look like they dont need to be %20.
 
+
+
     // lower
     s1 := strings.ToLower(name)
 
+    // replace / with ___
+    s2 := strings.Replace("/", "___")
+
     // special characters -> percent encoded
     // https://www.urlencoder.io/golang/
-    return url.QueryEscape(s1)
+    return url.QueryEscape(s2)
 }
 
 func Migrate(sourceDir string, destinationDir string) error {
@@ -132,9 +137,13 @@ func Migrate(sourceDir string, destinationDir string) error {
 
     // and transform !
     for _, fileName := range journalFiles {
-        newFileName := NewFileName(fileName)
 
         sourcePath := sourceDir + "/daily/" + fileName
+
+        // hmm although for journal files, date name
+        id, title, err := FindIdTitle(sourcePath)
+        // find Id, title again?
+        newFileName := NewFileName(title)
 
         lines, err := utils.ReadFileLines(sourcePath)
         if err != nil {
@@ -155,6 +164,11 @@ func Migrate(sourceDir string, destinationDir string) error {
         newFileName := NewFileName(fileName)
 
         sourcePath := sourceDir + "/" + fileName
+
+        id, title, err := FindIdTitle(sourcePath)
+        // find Id, title again?
+        newFileName := NewFileName(title)
+
         lines, err := utils.ReadFileLines(sourcePath)
         if err != nil {
             return fmt.Errorf("mmkay %v", err)
