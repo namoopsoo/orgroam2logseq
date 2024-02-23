@@ -76,7 +76,21 @@ func TransformLines(
     re := regexp.MustCompile(`\[\[([^\]]+)\]\[([^\]]+)\]\]`)
     idRe := regexp.MustCompile(`id:(.*)$`)
     
-    // Replacement function
+    // asset re [[../assets/foo.png]]
+    assetRe := regexp.MustCompile(`\[\[([^\]]+)\]\]`)
+    
+    replaceAssetFn := func(m string) string {
+        // 
+        matches := assetRe.FindStringSubmatch(m)
+        if len(matches) > 0 {
+            // 
+            foo := matches[1]
+            // split on /
+            fileName := strings.Split(foo, "/")[-1]
+            // TODO logseq asset? 
+        }
+    }
+
     replaceFn := func(m string) string {
         matches := re.FindStringSubmatch(m)
         if len(matches) == 3 {
