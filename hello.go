@@ -95,7 +95,7 @@ func MakeNewFileName(name string) string {
     s3 := url.QueryEscape(s2)
 
     // And spaces look like they dont need to be %20.
-    return strings.Replace(s3, "+", " ", -1)
+    return strings.Replace(s3, "+", " ", -1) + ".org"
 }
 
 func Migrate(sourceDir string, destinationDir string) error {
@@ -142,7 +142,6 @@ func Migrate(sourceDir string, destinationDir string) error {
         // id, title, err := FindIdTitle(sourcePath)
         // find Id, title again?
         newFileName := strings.Replace(fileName, "-", "_", -1)
-        
 
         lines, err := utils.ReadFileLines(sourcePath)
         if err != nil {
