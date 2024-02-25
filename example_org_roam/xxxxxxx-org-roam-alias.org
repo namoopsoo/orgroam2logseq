@@ -1,0 +1,4 @@
+:PROPERTIES:
+:ID: dc10fcfc-5c48-4f4d-90e1-91546c656d12
+:END:
+#+title: org roam alias

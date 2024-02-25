@@ -51,11 +51,11 @@ func FindIdTitle(filePath string) (string, string, error) {
     foundID := ""
     foundTitle := ""
 
-    for i, line := range lines {
+    for _, line := range lines {
         //fmt.Printf("DEBUG: %v\n", line)
         matches := idRe.FindStringSubmatch(line)
         if len(matches) > 0 {
-            fmt.Printf("%d, %v, match?\n", i, line)
+            // fmt.Printf("%d, %v, match?\n", i, line)
             for j, m := range matches {
                 fmt.Println(j, m)
             }
