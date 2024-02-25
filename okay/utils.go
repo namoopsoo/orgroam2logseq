@@ -76,22 +76,6 @@ func TransformLines(
     re := regexp.MustCompile(`\[\[([^\]]+)\]\[([^\]]+)\]\]`)
     idRe := regexp.MustCompile(`id:(.*)$`)
     
-    // asset re [[../assets/foo.png]]
-    assetRe := regexp.MustCompile(`\[\[([^\]]+)\]\]`)
-    
-    replaceAssetFn := func(m string) string {
-        // 
-        matches := assetRe.FindStringSubmatch(m)
-        if len(matches) > 0 {
-            // 
-            foo := matches[1]
-            // split on /
-            fileName := strings.Split(foo, "/")[-1]
-            // TODO logseq asset? 
-            return fmt.Sprintf("![img](../assets/%s)", fileName)
-        }
-        return m
-    }
 
     replaceFn := func(m string) string {
         matches := re.FindStringSubmatch(m)
@@ -119,22 +103,50 @@ func TransformLines(
         return m // Return the original string if no replacement was made
     }
 
+    // asset re [[../assets/foo.png]]
+    assetRe := regexp.MustCompile(`\[\[([^\]]+)\]\]`)
+    
+    replaceAssetFn := func(m string) string {
+        // 
+        matches := assetRe.FindStringSubmatch(m)
+        if len(matches) > 0 {
+            // 
+            foo := matches[1]
+            // split on /
+            parts := strings.Split(foo, "/")
+            fileName := parts[len(parts) - 1]
+            // TODO logseq asset? 
+            return fmt.Sprintf("![img](../assets/%s)", fileName)
+        }
+        return m
+    }
+
     var transformed []string
     for _, line := range lines {
 
-        if ( strings.HasPrefix(line, ":PROPERTIES:") || strings.HasPrefix(line, ":ID:") || strings.HasPrefix(line, ":END:") || strings.HasPrefix(line, "#+title:")) {
+        if ( strings.HasPrefix(line, ":PROPERTIES:") || strings.HasPrefix(line, ":ID:") || strings.HasPrefix(line, ":END:") || strings.HasPrefix(line, "#+title:") || strings.HasPrefix(line, "#+ATTR_ORG:") || strings.HasPrefix(line, "$+ATTR_HTML:") || strings.HasPrefix(line, "$+ATTR_LATEX:")) {
             continue
         }
 
         // Perform the replacement
-        result := re.ReplaceAllStringFunc(line, replaceFn)
+        result1 := re.ReplaceAllStringFunc(line, replaceFn)
+
     
-        if line != result {
+        if line != result1 {
             fmt.Println("\nDEBUG")
             fmt.Println("Original:", line)
-            fmt.Println("Modified:", result)
+            fmt.Println("Modified:", result1)
         }
-        transformed = append(transformed, result)
+
+        result2 := re.ReplaceAllStringFunc(result1, replaceAssetFn)
+        if result1 != result2 {
+            fmt.Println("\nDEBUG")
+            fmt.Println("Original:", result1)
+            fmt.Println("Modified:", result2)
+        }
+
+        
+        transformed = append(transformed, result2)
     }
     return transformed
 
