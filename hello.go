@@ -82,22 +82,21 @@ func FindIdTitle(filePath string) (string, string, error) {
     // return nil
 }
 
-func NewFileName(name string) string {
+func MakeNewFileName(name string) string {
     // TODO error handling
-
-    // TODO and spaces look like they dont need to be %20.
-
-
 
     // lower
     s1 := strings.ToLower(name)
 
     // replace / with ___
-    s2 := strings.Replace("/", "___")
+    s2 := strings.Replace(s1, "/", "___", -1)
 
     // special characters -> percent encoded
     // https://www.urlencoder.io/golang/
-    return url.QueryEscape(s2)
+    s3 := url.QueryEscape(s2)
+
+    // And spaces look like they dont need to be %20.
+    return strings.Replace(s3, "+", " ", -1)
 }
 
 func Migrate(sourceDir string, destinationDir string) error {
@@ -143,7 +142,7 @@ func Migrate(sourceDir string, destinationDir string) error {
         // hmm although for journal files, date name
         // id, title, err := FindIdTitle(sourcePath)
         // find Id, title again?
-        newFileName := strings.Replace(fileName, "-", "_")// NewFileName(title)
+        newFileName := strings.Replace(fileName, "-", "_", -1)
         
 
         lines, err := utils.ReadFileLines(sourcePath)
@@ -162,13 +161,13 @@ func Migrate(sourceDir string, destinationDir string) error {
 
     // and transform pages too TODO dont copypasta
     for _, fileName := range pageFiles {
-        newFileName := NewFileName(fileName)
+        newFileName := MakeNewFileName(fileName)
 
         sourcePath := sourceDir + "/" + fileName
 
-        id, title, err := FindIdTitle(sourcePath)
+        _, title, err := FindIdTitle(sourcePath)
         // find Id, title again?
-        newFileName := NewFileName(title)
+        newFileName = MakeNewFileName(title)
 
         lines, err := utils.ReadFileLines(sourcePath)
         if err != nil {
