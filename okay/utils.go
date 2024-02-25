@@ -2,6 +2,7 @@ package utils
 
 import (
     "bufio"
+    "time"
     "fmt"
     "os"
     "strings"
@@ -63,6 +64,22 @@ func WriteLines(path string, lines []string) error {
     return nil
 }
 
+// If title looks like "YYYY-MM-DD" then return Logseq style date
+// Error if we get "2021-99-99" illegal months or days say.
+func ReplaceIfLogseqDate(title string) (string, error) {
+    re := regexp.MustCompile(`\d\d\d\d-\d\d-\d\d`)
+    if re.MatchString(title) {
+        d1, err := time.Parse("2006-01-02", title)
+        if err != nil {
+            return "", fmt.Errorf("err %v", err)
+        }
+        fancy := d1.Format("Jan 2nd, 2006")
+        fmt.Println("DEBUG", title, "becomes:", fancy)
+        return fancy, nil
+    }
+    return title, nil
+}
+
 func TransformLines(
     lines []string, idMap map[string]string,
 ) []string {
@@ -92,6 +109,13 @@ func TransformLines(
                 if len(matches) > 0 {
                     theId := matches[1]
                     if newName, ok := idMap[theId]; ok {
+
+                        // handle dates like logseq
+                        newName, err := ReplaceIfLogseqDate(newName)
+                        if err != nil {
+                            fmt.Printf("Oops, got an illegal date! %v", newName)
+                        }
+
                         return fmt.Sprintf("[[%s]]", newName) // Use the new name from the map
                     } else {
                         fmt.Printf("uh oh this id was not found! %v , %v\n", theId, right)

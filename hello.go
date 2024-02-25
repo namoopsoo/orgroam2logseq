@@ -65,7 +65,6 @@ func FindIdTitle(filePath string) (string, string, error) {
         // also match title        
         matches = titleRe.FindStringSubmatch(line)
         if len(matches) > 0 {
-            fmt.Printf("%d, %v, match?\n", i, line)
             for j, m := range matches {
                 fmt.Println(j, m)
             }
