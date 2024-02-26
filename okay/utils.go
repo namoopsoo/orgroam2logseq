@@ -93,6 +93,11 @@ func MarkdownifyOrgBullets(s string) string {
     return replacement
 }
 
+// Replace non overlapping org style inline code with tilde "~~" to backticks, "``"
+func BackTickifyInlineCode(s string) string {
+    return "`" + s[1:(len(s) - 1)] + "`"
+}
+
 func TransformLines(
     lines []string, idMap map[string]string,
 ) []string {
@@ -108,6 +113,8 @@ func TransformLines(
 
     // asset re [[../assets/foo.png]]
     assetRe := regexp.MustCompile(`\[\[([^\]]+)\]\]`)
+    
+	codeRe := regexp.MustCompile("([~][^~]+[~])")
 
     replaceFn := func(m string) string {
         matches := re.FindStringSubmatch(m)
@@ -183,8 +190,11 @@ func TransformLines(
         // org to markdown hierarchy 
         bulletRe := regexp.MustCompile("^([*]+) ")
         result3 := bulletRe.ReplaceAllStringFunc(result2, MarkdownifyOrgBullets)
+
+        // inline code too
+        result4 := codeRe.ReplaceAllStringFunc(result3, BackTickifyInlineCode)
         
-        transformed = append(transformed, result3)
+        transformed = append(transformed, result4)
     }
     return transformed
 
