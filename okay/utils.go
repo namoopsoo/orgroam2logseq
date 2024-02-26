@@ -80,6 +80,20 @@ func ReplaceIfLogseqDate(title string) (string, error) {
     return title, nil
 }
 
+// Replace the org-mode *-bullets into indented bullets
+func MarkdownifyOrgBullets(s string) string {
+    // m := regexp.FindStringSubmatch(s)
+    // fmt.Println("DEBUG hello", s)
+    var replacement string
+    //for _ = range len(s) - 1 {
+    for i := 0; i < len(s)-1; i++ {
+        replacement += "    "
+    }
+    replacement += "- "
+
+    return replacement
+}
+
 func TransformLines(
     lines []string, idMap map[string]string,
 ) []string {
@@ -155,7 +169,6 @@ func TransformLines(
         // Perform the replacement
         result1 := re.ReplaceAllStringFunc(line, replaceFn)
 
-    
         if line != result1 {
             fmt.Println("\nDEBUG")
             fmt.Println("Original:", line)
@@ -169,8 +182,11 @@ func TransformLines(
             fmt.Println("Modified:", result2)
         }
 
+        // org to markdown hierarchy 
+        bulletRe := regexp.MustCompile("^([*]+) ")
+        result3 := bulletRe.ReplaceAllStringFunc(result2, MarkdownifyOrgBullets)
         
-        transformed = append(transformed, result2)
+        transformed = append(transformed, result3)
     }
     return transformed
 

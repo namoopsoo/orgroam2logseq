@@ -6,10 +6,11 @@
 * I [[id:f1650852-7cd0-46d6-b081-b5bfdb548cef][my org roam log seq integration]]
 ** 12:51 lets make a example org roam setup one can use to test out migrating
 *** putting it into ~/Users/mpiekarczyk/Notes/2024-02-11-example-org-roam~
-*** pages are on the root, for example, we have a blank page, ~20240130103457-apnea. org~ , 15 **** it starts with ~YYYYmmddHHMMSS-~ prefix .
+*** pages are on the root, for example, we have a blank page, ~20240130103457-apnea. org~ , 15 
+**** it starts with ~YYYYmmddHHMMSS-~ prefix .
 **** A link to I [[id:4550447c-2064-43b3-b67f-eff7fed31cec][apnea]], ~[[id:4550447c-2064-43b3-b67f-eff7fed31cec][apnea]]~, uses a guid,
 1/ Which appears in the ~20240130103457-apnea.org~ 's header, 
-#+begin_ src sh
+#+begin_src sh
 :PROPERTIES:
 :ID: 4550447c-2064-43b3-b67f-eff7fed31cec
 :END:
@@ -27,7 +28,7 @@
 *** I also have made some use of [[id:dc10fcfc-5c48-4f4d-90e1-91546c656d12][org roam alias]]
 for instance I have added this
 line after ~ID:~ into the page on ditto.
-#begin_src sh
+#+begin_src sh
 :ROAM ALIASES:
 "ditto" "model integration test new method"
 #+end_src
