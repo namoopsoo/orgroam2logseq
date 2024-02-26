@@ -85,8 +85,7 @@ func MarkdownifyOrgBullets(s string) string {
     // m := regexp.FindStringSubmatch(s)
     // fmt.Println("DEBUG hello", s)
     var replacement string
-    //for _ = range len(s) - 1 {
-    for i := 0; i < len(s)-1; i++ {
+    for i := 0; i < len(s) - 2; i++ {
         replacement += "    "
     }
     replacement += "- "
@@ -175,7 +174,7 @@ func TransformLines(
             fmt.Println("Modified:", result1)
         }
 
-        result2 := re.ReplaceAllStringFunc(result1, replaceAssetFn)
+        result2 := assetRe.ReplaceAllStringFunc(result1, replaceAssetFn)
         if result1 != result2 {
             fmt.Println("\nDEBUG")
             fmt.Println("Original:", result1)
