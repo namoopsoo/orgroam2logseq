@@ -105,7 +105,9 @@ func TransformLines(
     // Regex to find patterns like [[id][title]]
     re := regexp.MustCompile(`\[\[([^\]]+)\]\[([^\]]+)\]\]`)
     idRe := regexp.MustCompile(`id:(.*)$`)
-    
+
+    // asset re [[../assets/foo.png]]
+    assetRe := regexp.MustCompile(`\[\[([^\]]+)\]\]`)
 
     replaceFn := func(m string) string {
         matches := re.FindStringSubmatch(m)
@@ -140,8 +142,6 @@ func TransformLines(
         return m // Return the original string if no replacement was made
     }
 
-    // asset re [[../assets/foo.png]]
-    assetRe := regexp.MustCompile(`\[\[([^\]]+)\]\]`)
     
     replaceAssetFn := func(m string) string {
         // 
@@ -161,20 +161,19 @@ func TransformLines(
     var transformed []string
     for _, line := range lines {
 
-        if ( strings.HasPrefix(line, ":PROPERTIES:") || strings.HasPrefix(line, ":ID:") || strings.HasPrefix(line, ":END:") || strings.HasPrefix(line, "#+title:") || strings.HasPrefix(line, "#+ATTR_ORG:") || strings.HasPrefix(line, "$+ATTR_HTML:") || strings.HasPrefix(line, "$+ATTR_LATEX:")) {
+        if ( strings.HasPrefix(line, ":PROPERTIES:") || strings.HasPrefix(line, ":ID:") || strings.HasPrefix(line, ":END:") || strings.HasPrefix(line, "#+title:") || strings.HasPrefix(line, "#+ATTR_ORG:") || strings.HasPrefix(line, "#+ATTR_HTML:") || strings.HasPrefix(line, "#+ATTR_LATEX:")) {
             continue
         }
 
         // Perform the replacement
-        result1 := re.ReplaceAllStringFunc(line, replaceFn)
-
-        if line != result1 {
+        result1 := assetRe.ReplaceAllStringFunc(line, replaceAssetFn)
+        if result1 != line {
             fmt.Println("\nDEBUG")
             fmt.Println("Original:", line)
             fmt.Println("Modified:", result1)
         }
 
-        result2 := assetRe.ReplaceAllStringFunc(result1, replaceAssetFn)
+        result2 := re.ReplaceAllStringFunc(result1, replaceFn)
         if result1 != result2 {
             fmt.Println("\nDEBUG")
             fmt.Println("Original:", result1)
