@@ -199,6 +199,23 @@ func FixLinksOneOff(workDir string) error {
         ``
     )
 
+    replaceFn := func(m string) string {
+        matches := re.FindStringSubmatch(m)
+        if len(matches) == 3 {
+            // matches[0] is the whole match, matches[1] is the id, matches[2] is the title
+            // is it a url? 
+            left := matches[1]
+            right := matches[2]
+            if strings.HasPrefix(left, "https://") {
+                return fmt.Sprintf("[%s](%s)", right, left)
+            }
+
+
+        }
+        return m // Return the original string if no replacement was made
+    }
+
+
     for _, file := range files {
         // ok
         path := workDir + "/" + file
