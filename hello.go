@@ -195,10 +195,6 @@ func FixLinksOneOff(workDir string) error {
 
     re := regexp.MustCompile(`\[\[([^\]]+)\]\[([^\]]+)\]\]`)
 
-    re := regexp.MustCompile(
-        ``
-    )
-
     replaceFn := func(m string) string {
         matches := re.FindStringSubmatch(m)
         if len(matches) == 3 {
@@ -209,18 +205,35 @@ func FixLinksOneOff(workDir string) error {
             if strings.HasPrefix(left, "https://") {
                 return fmt.Sprintf("[%s](%s)", right, left)
             }
-
-
         }
         return m // Return the original string if no replacement was made
     }
-
 
     for _, file := range files {
         // ok
         path := workDir + "/" + file
         // 
+        //lines := readlines()
+        lines, err := utils.ReadFileLines(sourcePath)
+        if err != nil {
+            return fmt.Errorf("mmkay %v", err)
+        }
+
+        var transformed []string
+        for _, line := range lines {
+            // 
+            result := re.ReplaceAllStringFunc(line, replaceFn)
+            transformed = append(transformed, result)
+
+        }
+
+        // write 
+        err = utils.WriteLines(path, transformed)
+        if err != nil {
+            return fmt.Errorf("oops %v", err)
+        }
     }
+    return nil
 
 }
 
