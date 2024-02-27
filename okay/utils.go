@@ -123,7 +123,7 @@ func TransformLines(
             // is it a url? 
             left := matches[1]
             right := matches[2]
-            if strings.HasPrefix(right, "https://") {
+            if strings.HasPrefix(left, "https://") {
                 return fmt.Sprintf("[%s](%s)", right, left)
             }
             if strings.HasPrefix(left, "id:"){
