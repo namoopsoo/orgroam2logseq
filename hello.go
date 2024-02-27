@@ -203,19 +203,21 @@ func main() {
         PrintHelp()
         os.Exit(0)
     }
-    sourceDir := os.Args[2]
-    destinationDir := os.Args[3]
+
 
     switch os.Args[1] {
     case "migrate":
-
+        sourceDir := os.Args[2]
+        destinationDir := os.Args[3]
         err := Migrate(sourceDir, destinationDir)
         if err != nil {
             fmt.Fprintf(os.Stderr, "Oops: %v\n", err)
             os.Exit(1)
         }
-    case "foo":
+    case "fixlinks":
         fmt.Print("hi")
+        workDir := os.Args[2]
+        FixLinksOneOff(workDir)
     }
 
 }
