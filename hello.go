@@ -186,6 +186,25 @@ func Migrate(sourceDir string, destinationDir string) error {
     return nil
 }
 
+func FixLinksOneOff(workDir string) error {
+    // list all  files 
+    err, files := utils.ListDir(workDir)
+    if err != nil {
+        return fmt.Errorf("listdir err %v", err)
+    }
+
+    re := regexp.MustCompile(
+        ``
+    )
+
+    for _, file := range files {
+        // ok
+        path := workDir + "/" + file
+        // 
+    }
+
+}
+
 func PrintHelp() {
     fmt.Print(`
 Usage:
