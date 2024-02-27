@@ -193,6 +193,8 @@ func FixLinksOneOff(workDir string) error {
         return fmt.Errorf("listdir err %v", err)
     }
 
+    re := regexp.MustCompile(`\[\[([^\]]+)\]\[([^\]]+)\]\]`)
+
     re := regexp.MustCompile(
         ``
     )
