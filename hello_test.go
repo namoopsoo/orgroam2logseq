@@ -1,4 +1,4 @@
-package hello_test
+package hello_main
 
 import (
     "fmt"
