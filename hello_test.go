@@ -11,5 +11,10 @@ import "testing"
 
 func TestFoo(t *testing.T) {
     fmt.Println("hi")
-    t.Errorf("uhoh")
+
+    actual := hello.MakeNewFileName("yo/cool")
+    if actual != "yo___cool.md" {
+        t.Errorf("uhoh, %v, ", actual)
+    }
+    
 }
