@@ -3,7 +3,7 @@ package main
 import (
     "fmt"
     
-    "github.com/namoopsoo/orgroam2logseq/hello"
+    "github.com/namoopsoo/orgroam2logseq"
     "testing"
 
 )
