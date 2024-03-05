@@ -214,7 +214,7 @@ func FixLinksOneOff(workDir string) error {
         path := workDir + "/" + file
         // 
         //lines := readlines()
-        lines, err := utils.ReadFileLines(sourcePath)
+        lines, err := utils.ReadFileLines(path)
         if err != nil {
             return fmt.Errorf("mmkay %v", err)
         }
