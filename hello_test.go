@@ -13,8 +13,12 @@ func TestFoo(t *testing.T) {
     fmt.Println("hi")
 
     actual := MakeNewFileName("yo/cool")
+
+    fmt.Printf("actual, %v", actual)
     if actual != "yo___cool.md" {
         t.Errorf("uhoh, %v, ", actual)
     }
+
+    fmt.Println("bye")
     
 }
