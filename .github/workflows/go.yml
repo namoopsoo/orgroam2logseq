@@ -18,5 +18,5 @@ jobs:
           go-version: ${{ matrix.go-version }}
       # You can test your matrix by printing the current Go version
       - name:  Go test
-        run: go test *.go
+        run: go test *.go -v
 
