@@ -12,7 +12,7 @@ import (
 func TestFoo(t *testing.T) {
     fmt.Println("hi")
 
-    actual := main.MakeNewFileName("yo/cool")
+    actual := MakeNewFileName("yo/cool")
     if actual != "yo___cool.md" {
         t.Errorf("uhoh, %v, ", actual)
     }
