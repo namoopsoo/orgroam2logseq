@@ -22,3 +22,15 @@ func TestFoo(t *testing.T) {
     fmt.Println("bye")
     
 }
+
+func TestMigrate(t *testing.T) {
+    fmt.Println("hi migrate test")
+    sourceDir := "example"
+    destinationDir := "temp"
+    err := Migrate(sourceDir, destinationDir)
+
+    if err != nil {
+        t.Errorff("Oops: %v\n")
+        }
+    fmt.Println("bye")
+}
