@@ -29,6 +29,8 @@ func TestMigrate(t *testing.T) {
     // make temp
 
     os.Mkdir("temp", os.FileMode(0777))
+    os.Mkdir("temp/journals", os.FileMode(0777))
+    os.Mkdir("temp/pages", os.FileMode(0777))
 
     err, files := utils.ListDir(".")
     if err != nil {
