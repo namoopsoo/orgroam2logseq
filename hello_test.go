@@ -30,7 +30,7 @@ func TestMigrate(t *testing.T) {
     err := Migrate(sourceDir, destinationDir)
 
     if err != nil {
-        t.Errorf("Oops: %v\n")
+        t.Errorf("Oops: %v\n", err)
         }
     fmt.Println("bye")
 }
