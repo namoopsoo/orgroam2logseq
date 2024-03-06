@@ -34,7 +34,7 @@ func TestMigrate(t *testing.T) {
 
     sourceDir := "example_org_roam"
     destinationDir := "temp"
-    err := Migrate(sourceDir, destinationDir)
+    err = Migrate(sourceDir, destinationDir)
 
     if err != nil {
         t.Errorf("Oops: %v\n", err)
