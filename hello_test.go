@@ -3,7 +3,7 @@ package main
 import (
     "fmt"
     
-    //"github.com/namoopsoo/orgroam2logseq"
+    "github.com/namoopsoo/orgroam2logseq/utils"
     "testing"
 
 )
@@ -25,7 +25,14 @@ func TestFoo(t *testing.T) {
 
 func TestMigrate(t *testing.T) {
     fmt.Println("hi migrate test")
-    sourceDir := "example"
+
+    err, files := utils.ListDir(".")
+    if err != nil {
+        return t.Errorf("listdir err %v", err)
+    }
+    fmt.Printf("files %v\n", files)
+
+    sourceDir := "example_org_roam"
     destinationDir := "temp"
     err := Migrate(sourceDir, destinationDir)
 
