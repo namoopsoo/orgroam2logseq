@@ -5,6 +5,7 @@ import (
     
     "github.com/namoopsoo/orgroam2logseq/okay"
     "testing"
+    "os"
 
 )
 
@@ -25,6 +26,9 @@ func TestFoo(t *testing.T) {
 
 func TestMigrate(t *testing.T) {
     fmt.Println("hi migrate test")
+    // make temp
+
+    os.Mkdir("temp", os.FileMode(0777))
 
     err, files := utils.ListDir(".")
     if err != nil {
