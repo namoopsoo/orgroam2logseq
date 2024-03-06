@@ -28,7 +28,7 @@ func TestMigrate(t *testing.T) {
 
     err, files := utils.ListDir(".")
     if err != nil {
-        return t.Errorf("listdir err %v", err)
+        t.Errorf("listdir err %v", err)
     }
     fmt.Printf("files %v\n", files)
 
