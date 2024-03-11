@@ -98,8 +98,17 @@ func MakeNewFileName(name string) string {
     return strings.Replace(s3, "+", " ", -1) + ".md"
 }
 
+// copy/transform pages 
 func Migrate(sourceDir string, destinationDir string) error {
-    // copy/transform pages 
+
+    // if destinationDir already exists, that is an error.
+    if stat, err := os.Stat(destinationDir); err == nil && stat.IsDir() {
+        return fmt.Errorf("Dir already exists, %s, but expected not to exist yet. There is no over-write option yet.", destinationDir)
+    }
+
+    os.Mkdir(destinationDir, os.FileMode(0777))
+    os.Mkdir(destinationDir + "/journals", os.FileMode(0777))
+    os.Mkdir(destinationDir + "/pages", os.FileMode(0777))
 
     // list all nonjournal files 
     err, pageFiles := utils.ListDir(sourceDir)
@@ -254,7 +263,6 @@ func main() {
         PrintHelp()
         os.Exit(0)
     }
-
 
     switch os.Args[1] {
     case "migrate":
