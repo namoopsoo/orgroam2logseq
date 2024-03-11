@@ -151,7 +151,7 @@ func Migrate(sourceDir string, destinationDir string) error {
         // id, title, err := FindIdTitle(sourcePath)
         // find Id, title again?
         newFileName := strings.Replace(fileName, "-", "_", -1)
-        newFileName = strings.Replace(fileName, ".org", ".md", 1)
+        newFileName = strings.Replace(newFileName, ".org", ".md", 1)
 
         lines, err := utils.ReadFileLines(sourcePath)
         if err != nil {
