@@ -3,3 +3,4 @@
 :END:
 #+title: 2024-02-12
 * hi,  [[id:18de5464-9d1f-4962-a4ee-4fe544c9119b][2024-02-11]].
+* and so [[https://yahoo.com][an https link]] or [[http://127.0.0.1/go][a local link]] mmkay. 

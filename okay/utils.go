@@ -116,16 +116,19 @@ func TransformLines(
     
 	codeRe := regexp.MustCompile("([~][^~]+[~])")
 
+    // Replace org id and hyper links
     replaceFn := func(m string) string {
         matches := re.FindStringSubmatch(m)
         if len(matches) == 3 {
             // matches[0] is the whole match, matches[1] is the id, matches[2] is the title
-            // is it a url? 
             left := matches[1]
             right := matches[2]
-            if strings.HasPrefix(left, "https://") {
+
+            // Handle url, [[https://yahoo.com][link]] or [[http://127.0.0.1/go][local link]] , like https://orgmode.org/guide/Hyperlinks.html 
+            if strings.HasPrefix(left, "https://") || strings.HasPrefix(left, "http://") {
                 return fmt.Sprintf("[%s](%s)", right, left)
             }
+
             if strings.HasPrefix(left, "id:"){
                 matches := idRe.FindStringSubmatch(left)
                 if len(matches) > 0 {
@@ -180,6 +183,7 @@ func TransformLines(
             fmt.Println("Modified:", result1)
         }
 
+        // Replace org id and hyper links
         result2 := re.ReplaceAllStringFunc(result1, replaceFn)
         if result1 != result2 {
             fmt.Println("\nDEBUG")
@@ -187,11 +191,11 @@ func TransformLines(
             fmt.Println("Modified:", result2)
         }
 
-        // org to markdown hierarchy 
+        // replace org to markdown hierarchical ** asterisk to indented hyphens "-".
         bulletRe := regexp.MustCompile("^([*]+) ")
         result3 := bulletRe.ReplaceAllStringFunc(result2, MarkdownifyOrgBullets)
 
-        // inline code too
+        // inline code too from ~1 + 1~ to `1 + 1` style
         result4 := codeRe.ReplaceAllStringFunc(result3, BackTickifyInlineCode)
         
         transformed = append(transformed, result4)

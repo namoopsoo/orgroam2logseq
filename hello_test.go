@@ -2,15 +2,14 @@ package main
 
 import (
     "fmt"
-    
-    "github.com/namoopsoo/orgroam2logseq/okay"
-    "testing"
     "os"
+    "testing"
 
+    "github.com/namoopsoo/orgroam2logseq/okay"
 )
 
 
-func TestFoo(t *testing.T) {
+func TestMakeNewFileName(t *testing.T) {
     fmt.Println("hi")
 
     actual := MakeNewFileName("yo/cool")
@@ -25,18 +24,18 @@ func TestFoo(t *testing.T) {
 }
 
 func TestMigrate(t *testing.T) {
-    fmt.Println("hi migrate test")
-    // make temp
+    //fmt.Println("hi migrate test")
 
+    // make temp
     os.Mkdir("temp", os.FileMode(0777))
     os.Mkdir("temp/journals", os.FileMode(0777))
     os.Mkdir("temp/pages", os.FileMode(0777))
 
-    err, files := utils.ListDir(".")
+    err, _ := utils.ListDir(".")
     if err != nil {
         t.Errorf("listdir err %v", err)
     }
-    fmt.Printf("files %v\n", files)
+    // fmt.Printf("files %v\n", files)
 
     sourceDir := "example_org_roam"
     destinationDir := "temp"
@@ -45,5 +44,5 @@ func TestMigrate(t *testing.T) {
     if err != nil {
         t.Errorf("Oops: %v\n", err)
         }
-    fmt.Println("bye")
+    // fmt.Println("bye")
 }
